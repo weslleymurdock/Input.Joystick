@@ -40,7 +40,9 @@ jobs:
         run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
       
       - name: Pack
-        run: dotnet pack src/Input.Joystick/Input.Joystick.csproj  -p:PackageVersion "${VERSION}" --output .
+        run: | 
+            cd ${{ github.workspace }}/src/
+            dotnet pack -p:PackageVersion "${VERSION}" --output ${{ github.workspace }}
       
       - name: Push to nuget
         run: dotnet nuget push Input.Joystick.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${API_KEY} --skip-duplicate
